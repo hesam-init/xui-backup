@@ -1,0 +1,16 @@
+export const userTable = {
+  id: "INTEGER PRIMARY KEY",
+  down: "INTEGER",
+  enable: "TEXT",
+  expiryTime: "INTEGER",
+  listen: "INTEGER",
+  port: "INTEGER",
+  protocol: "TEXT",
+  remark: "TEXT",
+  settings: "TEXT",
+  sniffing: "TEXT",
+  streamSettings: "TEXT",
+  tag: "TEXT",
+  total: "INTEGER",
+  up: "INTEGER",
+};
