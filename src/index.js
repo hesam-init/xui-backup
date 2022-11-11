@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
-import { userBackup } from "./services/services.js";
+import { addUser, userBackup } from "./services/services.js";
+import { userDatabase } from "./db/userDatabase.js";
 import inquirer from "inquirer";
 import dotenv from "dotenv";
-import { userDatabase } from "./db/userDatabase.js";
 dotenv.config();
 
 // database config:
@@ -17,6 +17,10 @@ const cliMenu = [
   {
     name: "Restore V2ray Users",
     value: "restore",
+  },
+  {
+    name: "Database Check",
+    value: "db",
   },
 ];
 
@@ -37,7 +41,7 @@ if (
       },
     ])
     .then((answers) => {
-      console.clear();
+      process.stdout.write("\x1Bc");
 
       const { selected } = answers;
       switch (selected) {
@@ -46,7 +50,11 @@ if (
           break;
 
         case "restore":
-          dataBase();
+          addUser();
+          break;
+
+        case "db":
+          userDatabase.getUsers();
           break;
 
         default:

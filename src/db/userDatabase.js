@@ -1,4 +1,5 @@
 import sqlite3 from "sqlite3";
+import bytes from "bytes";
 import { userTable } from "./tables.js";
 const db = new sqlite3.Database("database.db");
 
@@ -20,14 +21,14 @@ const generateValue = (count) => {
 };
 
 export class userDatabase {
-  // create table
+  // create table:
   static createTable() {
     db.serialize(() => {
       db.run(`CREATE TABLE IF NOT EXISTS UsersList (${jsonTable(userTable)})`);
     });
   }
 
-  // insert data
+  // insert data:
   static insertUser(data) {
     const sql = `
     INSERT INTO UsersList(id,down,enable,expiryTime,listen,port,protocol,remark,settings,sniffing,streamSettings,tag,total,up)
@@ -53,12 +54,25 @@ export class userDatabase {
         data.up,
       ],
       (err) => {
-        if (err) {
-          return console.error(err.message);
-        } else {
-          console.log(`data added`);
+        if (!err) {
+          console.log(`user added`);
         }
       }
     );
+  }
+
+  // get all data:
+  static getUsers() {
+    db.all("SELECT * FROM UsersList", (err, rows) => {
+      if (rows.length > 1) {
+        rows.forEach((row) => {
+          console.log(
+            `${row.id}: ${row.remark} ${bytes(row.up + row.down)} used`
+          );
+        });
+      } else {
+        console.log("No data in table");
+      }
+    });
   }
 }
